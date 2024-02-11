@@ -10,22 +10,22 @@ type Props = {
     id: string
   }
 }
-
-interface UserData {
-  user_name: string;
-  user_phone: string;
+interface DocData {
+  doc_name: string;
+  doc_spec: string;
+  doc_slots: string;
 }
 
 export default function User({ params: { id } }: Props) {
-  const [userData, setUserData] = useState(null);
+  const [docData, setDocData] = useState(null);
 
   useEffect(() => {
-    const db = ref(database, `users/${id}`)
+    const db = ref(database, `docs/${id}`)
 
     const handleDataChange = (snapshot: any) => {
       const data = snapshot.val();
       if (data) {
-        setUserData(data)
+        setDocData(data)
         console.log('data', data)
 
       }
@@ -38,11 +38,11 @@ export default function User({ params: { id } }: Props) {
   }, []);
   return (
     <div className="single-page">
-      <h1>User Details</h1>
-      <p><b>User ID:</b> {id} </p>
-      <p><b>Name:</b> {userData?.user_name || 'N/A'}</p>
-      <p><b>Phone:</b> {userData?.user_phone || 'N/A'} </p>
-
+      <h1>Doc Details</h1>
+      <p><b>Doc ID:</b> {id} </p>
+      <p><b>Name:</b> {docData?.doc_name || 'N/A'}</p>
+      <p><b>Spec:</b> {docData?.doc_spec || 'N/A'}</p>
+      <p><b>Slots:</b> {docData?.doc_slots || 'N/A'}</p>
       <Link href="../users" className="btn-link">Go Back</Link>
     </div>
   );

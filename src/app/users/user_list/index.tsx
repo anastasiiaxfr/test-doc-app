@@ -4,28 +4,38 @@ import styles from "./list.module.sass";
 import Link from "next/link";
 
 import { database } from '../../_firebase';
-import { ref, onValue, } from 'firebase/database';
+import { ref, off, onValue, DataSnapshot } from 'firebase/database';
 
+interface UserData {
+    [key: string]: {
+        user_name: string;
+        user_phone: string;
+    };
+}
 
 export default function Users() {
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState<UserData | null>(null);
 
     useEffect(() => {
-        const db = ref(database, 'users')
+        const dbRef = ref(database, 'users');
 
-        const handleDataChange = (snapshot) => {
-            const data = snapshot.val()
+        const handleDataChange = (snapshot: DataSnapshot) => {
+            const data = snapshot.val();
             if (data) {
-                setUserData(data)
+                setUserData(data);
             }
-        }
-        const handleError = (error) => {
-            console.error('Error reading data:', error)
-        }
-        onValue(db, handleDataChange, handleError)
+        };
 
+        const handleError = (error: any) => {
+            console.error('Error reading data:', error);
+        };
+
+        onValue(dbRef, handleDataChange, handleError);
+
+        return () => {
+            off(dbRef, 'value', handleDataChange);
+        };
     }, []);
-
 
     return (
         <div className="">
@@ -36,9 +46,8 @@ export default function Users() {
                         Object.keys(userData).map((id) => (
                             <li key={id}>
                                 <Link href={`/users/${id}`}>
-                                    <p><strong>User ID:</strong> {id}</p>
-                                    <p><strong>Name:</strong> {userData[id].username}</p>
-                                    <p><strong>Phone:</strong> {userData[id].phone}</p>
+                                    <p><strong>Name:</strong> {userData[id]?.user_name || 'N/A'}</p>
+                                    <p><strong>Phone:</strong> {userData[id]?.user_phone || 'N/A'}</p>
                                 </Link>
                             </li>
                         ))}

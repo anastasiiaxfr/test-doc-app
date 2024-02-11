@@ -5,12 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { useState, useRef, useEffect } from 'react';
 import { ref, set } from 'firebase/database';
 import { database } from "../../_firebase";
-import { useFormik, resetForm } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 
 export default function AddUser() {
-    const form = useRef(null);
+    const form = useRef<HTMLFormElement>(null);
 
     const [message, setMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
@@ -27,8 +27,8 @@ export default function AddUser() {
 
 
             if (form.current) {
-                const user_name = form.current.name.value;
-                const user_phone = form.current.phone.value;
+                const user_name = (form.current.elements.namedItem('name') as HTMLInputElement)?.value;
+                const user_phone = (form.current.elements.namedItem('phone') as HTMLInputElement)?.value;
                 const user_id = uuidv4();
                 if (user_name.length > 0 && user_phone.length > 0) {
                     writeUserData(user_id, user_name, user_phone);
@@ -48,8 +48,8 @@ export default function AddUser() {
     function writeUserData(userId: any, name: any, phone: any) {
         const db = database;
         set(ref(db, 'users/' + userId), {
-            username: name,
-            phone: phone
+            user_name: name,
+            user_phone: phone
         });
     }
 

@@ -7,9 +7,9 @@ export default function Home() {
       <article className="p-24">
         <h1>All data info:</h1>
         <ol className="menu-nav">
-          <li><Link href="/users" underline="none">Add User <Button variant="outlined" size="small">Create</Button></Link></li>
-          <li><Link href="/docs" underline="none">Add Doctor <Button variant="outlined" size="small">Create</Button></Link></li>
-          <li><Link href="/get-doc" underline="none">Get My Doctor <Button variant="outlined" size="small">Visit</Button></Link></li>
+          <li><Link href="/users">Add User <Button variant="outlined" size="small">Create</Button></Link></li>
+          <li><Link href="/docs">Add Doctor <Button variant="outlined" size="small">Create</Button></Link></li>
+          <li><Link href="/get-doc">Get My Doctor <Button variant="outlined" size="small">Visit</Button></Link></li>
         </ol>
       </article>
     </main>
