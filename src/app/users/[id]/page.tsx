@@ -1,9 +1,9 @@
-'use client';
-import styles from './single.module.sass';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { database } from '../../_firebase';
-import { ref, onValue, } from 'firebase/database';
+'use client'
+import styles from './single.module.sass'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { database } from '../../_firebase'
+import { ref, onValue, } from 'firebase/database'
 
 type Props = {
   params: {
@@ -12,18 +12,18 @@ type Props = {
 }
 
 interface UserData {
-  user_name: string;
-  user_phone: string;
+  user_name: string
+  user_phone: string
 }
 
 export default function User({ params: { id } }: Props) {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null)
 
   useEffect(() => {
     const db = ref(database, `users/${id}`)
 
     const handleDataChange = (snapshot: any) => {
-      const data = snapshot.val();
+      const data = snapshot.val()
       if (data) {
         setUserData(data)
         console.log('data', data)
@@ -35,7 +35,7 @@ export default function User({ params: { id } }: Props) {
     }
     onValue(db, handleDataChange, handleError)
 
-  }, []);
+  }, [])
   return (
     <div className="single-page">
       <h1>User Details</h1>
@@ -45,5 +45,5 @@ export default function User({ params: { id } }: Props) {
 
       <Link href="../users" className="btn-link">Go Back</Link>
     </div>
-  );
+  )
 }

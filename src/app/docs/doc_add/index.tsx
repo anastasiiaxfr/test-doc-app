@@ -1,18 +1,18 @@
-'use client';
-import styles from "./form.module.sass";
-import { useState, useEffect, useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { ref, set } from 'firebase/database';
-import { database } from "../../_firebase";
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import Input from './input';
+'use client'
+import styles from "./form.module.sass"
+import { useState, useEffect, useRef } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { ref, set } from 'firebase/database'
+import { database } from "../../_firebase"
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import Input from './input'
 
 export default function AddDoc() {
-    const [message, setMessage] = useState('');
-    const [showMessage, setShowMessage] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
-    const form = useRef<HTMLFormElement>(null);
+    const [message, setMessage] = useState('')
+    const [showMessage, setShowMessage] = useState(false)
+    const [submitted, setSubmitted] = useState(false)
+    const form = useRef<HTMLFormElement>(null)
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -20,49 +20,49 @@ export default function AddDoc() {
             slots: []
         },
         onSubmit: async (values) => {
-            setMessage('Form submitted');
-            setShowMessage(true);
-            setSubmitted(true);
+            setMessage('Form submitted')
+            setShowMessage(true)
+            setSubmitted(true)
 
-            const doc_id = uuidv4();
-            const { name, spec, slots } = values;
+            const doc_id = uuidv4()
+            const { name, spec, slots } = values
 
             if (name && spec && slots.length > 0 && form.current) {
-                writeUserData(doc_id, name, spec, slots);
-                form.current.reset();
-                formik.resetForm();
+                writeUserData(doc_id, name, spec, slots)
+                form.current.reset()
+                formik.resetForm()
             }
         },
         validationSchema: yup.object({
             name: yup.string().trim().required('Name is required'),
             spec: yup.string().trim().required('Spec is required')
         }),
-    });
+    })
 
     function writeUserData(userId: any, name: any, spec: any, slots: any) {
-        const db = database;
+        const db = database
         set(ref(db, 'docs/' + userId), {
             doc_name: name,
             doc_spec: spec,
             doc_slots: slots.join(', ')
-        });
+        })
     }
 
     useEffect(() => {
         if (submitted) {
             document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.checked = false;
-            });
+                checkbox.checked = false
+            })
         }
-    }, [submitted]);
+    }, [submitted])
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setShowMessage(false);
-        }, 1000);
+            setShowMessage(false)
+        }, 1000)
 
-        return () => clearTimeout(timeout);
-    }, [showMessage]);
+        return () => clearTimeout(timeout)
+    }, [showMessage])
 
     return (
         <form onSubmit={formik.handleSubmit} method="POST" noValidate className={styles.form} ref={form}>
@@ -213,5 +213,5 @@ export default function AddDoc() {
                 </div>
             )}
         </form>
-    );
+    )
 }

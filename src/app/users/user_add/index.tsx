@@ -1,20 +1,20 @@
-"use client";
+"use client"
 
-import styles from "./form.module.sass";
-import { v4 as uuidv4 } from 'uuid';
-import { useState, useRef, useEffect } from 'react';
-import { ref, set } from 'firebase/database';
-import { database } from "../../_firebase";
-import { useFormik } from 'formik';
-import * as yup from 'yup';
+import styles from "./form.module.sass"
+import { v4 as uuidv4 } from 'uuid'
+import { useState, useRef, useEffect } from 'react'
+import { ref, set } from 'firebase/database'
+import { database } from "../../_firebase"
+import { useFormik } from 'formik'
+import * as yup from 'yup'
 
 
 export default function AddUser() {
-    const form = useRef<HTMLFormElement>(null);
+    const form = useRef<HTMLFormElement>(null)
 
-    const [message, setMessage] = useState('');
-    const [showMessage, setShowMessage] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
+    const [message, setMessage] = useState('')
+    const [showMessage, setShowMessage] = useState(false)
+    const [submitted, setSubmitted] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -22,19 +22,19 @@ export default function AddUser() {
             name: '',
         },
         onSubmit: async (values, { resetForm }) => {
-            setMessage('Form submitted');
-            setSubmitted(true);
+            setMessage('Form submitted')
+            setSubmitted(true)
 
 
             if (form.current) {
-                const user_name = (form.current.elements.namedItem('name') as HTMLInputElement)?.value;
-                const user_phone = (form.current.elements.namedItem('phone') as HTMLInputElement)?.value;
-                const user_id = uuidv4();
+                const user_name = (form.current.elements.namedItem('name') as HTMLInputElement)?.value
+                const user_phone = (form.current.elements.namedItem('phone') as HTMLInputElement)?.value
+                const user_id = uuidv4()
                 if (user_name.length > 0 && user_phone.length > 0) {
-                    writeUserData(user_id, user_name, user_phone);
-                    form.current.reset();
-                    resetForm();
-                    setShowMessage(true);
+                    writeUserData(user_id, user_name, user_phone)
+                    form.current.reset()
+                    resetForm()
+                    setShowMessage(true)
                 }
             }
 
@@ -43,23 +43,23 @@ export default function AddUser() {
             name: yup.string().trim().required('Name is required'),
             phone: yup.string().trim().required('Phone is required').matches(/^\+?\d{10,14}$/, 'Invalid phone number'),
         }),
-    });
+    })
 
     function writeUserData(userId: any, name: any, phone: any) {
-        const db = database;
+        const db = database
         set(ref(db, 'users/' + userId), {
             user_name: name,
             user_phone: phone
-        });
+        })
     }
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setShowMessage(false);
-        }, 1000);
+            setShowMessage(false)
+        }, 1000)
 
-        return () => clearTimeout(timeout);
-    }, [showMessage]);
+        return () => clearTimeout(timeout)
+    }, [showMessage])
 
     return (
         <form className={styles.form} onSubmit={formik.handleSubmit} ref={form} method="POST" noValidate>
@@ -109,5 +109,5 @@ export default function AddUser() {
                 </div>
             )}
         </form>
-    );
+    )
 }

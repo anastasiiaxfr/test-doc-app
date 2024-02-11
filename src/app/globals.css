@@ -65,7 +65,8 @@ article {
 }
 
 .btn-link {
-  display: inline-flex;
+  display: block;
+  margin: 0 auto 24px;
   text-align: center;
   text-transform: uppercase;
   text-decoration: underline;
