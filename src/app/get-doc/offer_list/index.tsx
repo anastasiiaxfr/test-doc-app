@@ -44,7 +44,7 @@ export default function Offers() {
                 {offerData &&
                     Object.keys(offerData).map((id) => (
                         <li key={id}>
-                            <Link href={`/users/${id}`}>
+                            <Link href={`/get-doc/${id}`}>
                                 <p>
                                     <b>User:</b> {offerData[id]?.user || 'N/A'}
                                 </p>

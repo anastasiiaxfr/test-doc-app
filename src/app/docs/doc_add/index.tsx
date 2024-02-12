@@ -38,7 +38,7 @@ export default function AddDoc() {
 
             setTargetMonth(target_month)
 
-            if (form.current && name && spec && target_month && slots.length > 0) {
+            if (form.current && name && spec && target_month && slots.length > 1) {
                 writeUserData(doc_id, name, spec, slots)
                 form.current.reset()
                 formik.resetForm()
@@ -163,31 +163,31 @@ export default function AddDoc() {
                 </label>
 
                 <div className={styles.table_wrap}>
+                    <table className={styles.form_datetime} id="target_datetime">
+                        <tbody>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>10:00</th>
+                                <th>11:00</th>
+                                <th>12:00</th>
+                                <th>14:00</th>
+                                <th>15:00</th>
+                                <th>16:00</th>
+                                <th>17:00</th>
+                                <th>18:00</th>
+                                <th>19:00</th>
+                            </tr>
 
+                            {daysInMonth.map((day) => (
+                                <Row key={day} formik={formik} day={day} month={targetMonth} year={targetYear.toString().slice(-2)} />
+
+                            ))}
+
+
+                        </tbody>
+                    </table>
                 </div>
-                <table className={styles.form_datetime} id="target_datetime">
-                    <tbody>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th>10:00</th>
-                            <th>11:00</th>
-                            <th>12:00</th>
-                            <th>14:00</th>
-                            <th>15:00</th>
-                            <th>16:00</th>
-                            <th>17:00</th>
-                            <th>18:00</th>
-                            <th>19:00</th>
-                        </tr>
 
-                        {daysInMonth.map((day) => (
-                            <Row key={day} formik={formik} day={day} month={targetMonth} year={targetYear.toString().slice(-2)} />
-
-                        ))}
-
-
-                    </tbody>
-                </table>
             </div>}
             <button type="submit">Send</button>
 
